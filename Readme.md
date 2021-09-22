@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
 * Студент: [Polina Metlitskaya](https://up.htmlacademy.ru/javascript/24/user/812683).
-* Наставник: `Неизвестно`.
+* Наставник: [Pavel Lukin](https://htmlacademy.ru/profile/id1313529).
 
 ---
 
