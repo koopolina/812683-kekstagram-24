@@ -1,6 +1,6 @@
 function getRandomInt(min, max) {
   if(min >= max) {
-    return false;
+    throw false;
   }
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -14,10 +14,8 @@ getRandomInt(0, 55);
 
 const lengthRange = (inputtxt, maxLength) => {
   const userInput = inputtxt;
-  if(userInput <= maxLength) {
-    return userInput <= maxLength;
-  }
-  return false;
+  userInput <= maxLength;
+  return userInput <= maxLength;
 };
 
-lengthRange(155, 140);
+lengthRange(135, 140);
