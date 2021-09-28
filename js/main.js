@@ -1,6 +1,6 @@
 function getRandomInt(min, max) {
   if(min >= max) {
-    throw false;
+    throw 'До не может быть меньше или равно значению от';
   }
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -14,7 +14,6 @@ getRandomInt(0, 55);
 
 const lengthRange = (inputtxt, maxLength) => {
   const userInput = inputtxt;
-  userInput <= maxLength;
   return userInput <= maxLength;
 };
 
