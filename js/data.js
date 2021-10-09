@@ -41,8 +41,6 @@ const createPost = (postID) => {
   };
 };
 
-const postList = Array(NUMBER_MESSAGES).fill(null).map((_, i) => createPost(i+1));
+const createPosts = () => Array(NUMBER_MESSAGES).fill(null).map((_, i) => createPost(i+1));
 
-const similarPosts = Array.from({length: NUMBER_MESSAGES}, createPost);
-
-export {NAMES, POST_MESSAGES, NUMBER_MESSAGES, createComments, createPost, postList, similarPosts};
+export {createPosts};
