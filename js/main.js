@@ -1,4 +1,6 @@
-import '/data.js';
-import {createPosts} from '/data.js';
+import {createPosts} from '../js/data.js';
+import '../js/picture.js';
+import {renderPosts} from '../js/picture.js';
 
-createPosts();
+const similarPosts = createPosts();
+renderPosts(similarPosts);

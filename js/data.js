@@ -1,4 +1,4 @@
-import {getRandomInt} from '/util.js';
+import {getRandomInt} from '../js/util.js';
 
 const NAMES = [
   'Алиса',
@@ -37,7 +37,7 @@ const createPost = (postID) => {
     url: `photos/${  postID  }.jpg`,
     description: 'Всем привет! Как дела?',
     likes: randomLikesIndex,
-    comments: createComments(),
+    comments: Array(getRandomInt(15, 200)).fill(null).map(createComments),
   };
 };
 
