@@ -1,4 +1,5 @@
-import '/data.js';
-import {createPosts} from '/data.js';
+import '../js/data.js';
+import {createPosts} from '../js/data.js';
+import '../js/picture.js';
 
 createPosts();
