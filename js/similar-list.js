@@ -1,8 +1,7 @@
-const userFeed = document.querySelector('.big-picture');
-userFeed.classList.remove('hidden');
+// const userFeed = document.querySelector('.big-picture');
+// userFeed.classList.remove('hidden');
 
 const similarListElement = document.querySelector('.pictures');
-
 const similarPostTemplate = document.querySelector('#picture').content;
 
 const renderPosts = (posts) => {
