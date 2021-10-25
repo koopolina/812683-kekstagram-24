@@ -1,10 +1,11 @@
 const similarListElement = document.querySelector('.pictures');
+const previewModal = document.querySelector('.big-picture');
 const similarPostTemplate = document.querySelector('#picture').content;
 
 const renderPosts = (posts) => {
   const similarListFragment = document.createDocumentFragment();
 
-  posts.forEach(({url, likes, comments}) => {
+  posts.forEach(({ url, likes, comments }) => {
     const postElement = similarPostTemplate.cloneNode(true);
     postElement.querySelector('.picture__img').src = url;
     postElement.querySelector('.picture__likes').textContent = likes;
@@ -15,4 +16,8 @@ const renderPosts = (posts) => {
   similarListElement.appendChild(similarListFragment);
 };
 
-export {renderPosts};
+similarListElement.addEventListener('click', () => {
+  previewModal.classList.remove('hidden');
+});
+
+export { renderPosts };
