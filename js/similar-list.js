@@ -1,5 +1,6 @@
+import { renderBigPicture } from '../js/preview.js';
+
 const similarListElement = document.querySelector('.pictures');
-const previewModal = document.querySelector('.big-picture');
 const similarPostTemplate = document.querySelector('#picture').content;
 
 const renderPosts = (posts) => {
@@ -11,13 +12,11 @@ const renderPosts = (posts) => {
     postElement.querySelector('.picture__likes').textContent = likes;
     postElement.querySelector('.picture__comments').textContent = comments.length;
     similarListFragment.append(postElement);
+
+    postElement.addEventListener('click', () => renderBigPicture(posts));
   });
 
   similarListElement.appendChild(similarListFragment);
 };
-
-similarListElement.addEventListener('click', () => {
-  previewModal.classList.remove('hidden');
-});
 
 export { renderPosts };

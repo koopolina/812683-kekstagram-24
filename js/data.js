@@ -43,4 +43,4 @@ const createPost = (postID) => {
 
 const createPosts = () => Array(NUMBER_MESSAGES).fill(null).map((_, i) => createPost(i + 1));
 
-export { createPosts, createComments };
+export { createPosts };
