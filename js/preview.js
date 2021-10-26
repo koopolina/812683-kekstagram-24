@@ -1,9 +1,9 @@
-import { isEscapeKey } from '../js/util.js';
+import { isEscapeKey } from './util.js';
 
 const body = document.querySelector('body');
 const previewModal = document.querySelector('.big-picture');
 const closeModal = document.querySelector('#picture-cancel');
-const bigPicture = previewModal.querySelector('.big-picture__img');
+const bigPicture = previewModal.querySelector('.big-picture__img img');
 const likesCount = previewModal.querySelector('.likes-count');
 const commentsCount = previewModal.querySelector('.comments-count');
 const socialCaption = previewModal.querySelector('.social__caption');
