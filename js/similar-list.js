@@ -6,7 +6,7 @@ const similarPostTemplate = document.querySelector('#picture').content.querySele
 const renderPosts = (posts) => {
   const similarListFragment = document.createDocumentFragment();
 
-  posts.forEach(({ post }) => {
+  posts.forEach((post) => {
     const postElement = similarPostTemplate.cloneNode(true);
     postElement.querySelector('.picture__img').src = post.url;
     postElement.querySelector('.picture__likes').textContent = post.likes;
