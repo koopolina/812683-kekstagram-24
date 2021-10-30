@@ -10,17 +10,20 @@ const socialCaption = previewModal.querySelector('.social__caption');
 const commentCount = previewModal.querySelector('.social__comment-count');
 const commentLoader = previewModal.querySelector('.comments-loader');
 const commentTemplate = document.querySelector('#comments').content.querySelector('.social__comment');
-const commentList = document.querySelector('.social__comments');
+const commentList = previewModal.querySelector('.social__comments');
 
-const renderComment = ({avatar, name, message}) => {
+const MAX_COUNT = 5;
+
+const clearComments = () => {
+  commentList.textContent = '';
+};
+
+const renderComment = ({ avatar, name, message }) => {
   const commentElement = commentTemplate.cloneNode(true);
   const imgElement = commentElement.querySelector('.social__picture');
-
   imgElement.src = avatar;
   imgElement.alt = name;
-
   commentElement.querySelector('.social__text').textContent = message;
-
   commentList.appendChild(commentElement);
 };
 
@@ -29,15 +32,32 @@ const openPicture = (picture) => {
   likesCount.textContent = picture.likes;
   commentsCount.textContent = picture.comments.length;
   socialCaption.textContent = picture.description;
-  picture.comments.forEach(renderComment);
+  clearComments();
+  const showComments = () => {
+    picture.comments.slice(0, MAX_COUNT).forEach(renderComment);
+    if (picture.comments.length <= MAX_COUNT) {
+      commentLoader.classList.add('hidden');
+    } else {
+      commentLoader.classList.remove('hidden');
+      if (showComments.length === picture.comments.length) {
+        commentLoader.classList.add('hidden');
+      }
+    }
+  };
+  const showCount = () => {
+    commentCount.textContent = `${renderComment.length} из ${picture.comments.length} комментариев`;
+  };
+  showComments();
+  commentLoader.addEventListener('click', () => {
+    showComments();
+    showCount;
+  });
 };
 
 const renderBigPicture = (post) => {
-  commentCount.classList.add('hidden');
-  commentLoader.classList.add('hidden');
+  openPicture(post);
   previewModal.classList.remove('hidden');
   body.classList.add('modal-open');
-  openPicture(post);
 };
 
 document.addEventListener('keydown', (evt) => {
