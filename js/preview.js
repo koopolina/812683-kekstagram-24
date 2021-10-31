@@ -18,6 +18,11 @@ const clearComments = () => {
   commentList.textContent = '';
 };
 
+// const newComments = () => {
+//   const newComment = commentCount.cloneNode(true);
+//   previewModal.appendChild(newComment);
+// };
+
 const renderComment = ({ avatar, name, message }) => {
   const commentElement = commentTemplate.cloneNode(true);
   const imgElement = commentElement.querySelector('.social__picture');
@@ -33,24 +38,20 @@ const openPicture = (picture) => {
   commentsCount.textContent = picture.comments.length;
   socialCaption.textContent = picture.description;
   clearComments();
-  const showComments = () => {
-    picture.comments.slice(0, MAX_COUNT).forEach(renderComment);
-    if (picture.comments.length <= MAX_COUNT) {
+  picture.comments.slice(0, MAX_COUNT).forEach(renderComment);
+  commentLoader.addEventListener('click', () => {
+    const renderedComments = document.querySelectorAll('.social__comment').length;
+    const slicedComments = picture.comments.slice(renderedComments, renderedComments + MAX_COUNT);
+    slicedComments.forEach(renderComment);
+    if (renderComment <= MAX_COUNT) {
       commentLoader.classList.add('hidden');
     } else {
       commentLoader.classList.remove('hidden');
-      if (showComments.length === picture.comments.length) {
+      if (renderedComments === picture.comments.length) {
         commentLoader.classList.add('hidden');
       }
     }
-  };
-  const showCount = () => {
-    commentCount.textContent = `${renderComment.length} из ${picture.comments.length} комментариев`;
-  };
-  showComments();
-  commentLoader.addEventListener('click', () => {
-    showComments();
-    showCount;
+    commentCount.textContent = `${renderedComments + slicedComments.length} из ${picture.comments.length} комментариев`;
   });
 };
 
@@ -65,6 +66,8 @@ document.addEventListener('keydown', (evt) => {
     evt.preventDefault();
     previewModal.classList.add('hidden');
     body.classList.remove('modal-open');
+    commentCount.replaceWith(commentCount.cloneNode(true));
+    // newComments();
   }
 });
 
