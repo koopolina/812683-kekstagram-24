@@ -1,5 +1,7 @@
 import { isEscapeKey } from './util.js';
 
+const MAX_COUNT = 5;
+
 const body = document.querySelector('body');
 const previewModal = document.querySelector('.big-picture');
 const closeModal = document.querySelector('#picture-cancel');
@@ -9,19 +11,17 @@ const commentsCount = previewModal.querySelector('.comments-count');
 const socialCaption = previewModal.querySelector('.social__caption');
 const commentCount = previewModal.querySelector('.social__comment-count');
 const commentLoader = previewModal.querySelector('.comments-loader');
+const commentLoaderTemplate = commentLoader.cloneNode(true);
 const commentTemplate = document.querySelector('#comments').content.querySelector('.social__comment');
 const commentList = previewModal.querySelector('.social__comments');
-
-const MAX_COUNT = 5;
 
 const clearComments = () => {
   commentList.textContent = '';
 };
 
-// const newComments = () => {
-//   const newComment = commentCount.cloneNode(true);
-//   previewModal.appendChild(newComment);
-// };
+const setCommentCounter = (renderedCommentCount, currentCount) => {
+  commentCount.textContent = `${renderedCommentCount} из ${currentCount} комментариев`;
+};
 
 const renderComment = ({ avatar, name, message }) => {
   const commentElement = commentTemplate.cloneNode(true);
@@ -29,7 +29,19 @@ const renderComment = ({ avatar, name, message }) => {
   imgElement.src = avatar;
   imgElement.alt = name;
   commentElement.querySelector('.social__text').textContent = message;
-  commentList.appendChild(commentElement);
+  return commentElement;
+};
+
+const loadMoreHandler = (comments) => {
+  const renderedComments = document.querySelectorAll('.social__comment').length;
+  const slicedComments = comments.slice(renderedComments, renderedComments + MAX_COUNT);
+  commentList.append(...slicedComments.map(renderComment));
+  if (renderComment <= MAX_COUNT || renderedComments === comments.length) {
+    commentLoader.classList.add('hidden');
+  } else {
+    commentLoader.classList.remove('hidden');
+  }
+  setCommentCounter(renderedComments + slicedComments.length, comments.length);
 };
 
 const openPicture = (picture) => {
@@ -38,21 +50,15 @@ const openPicture = (picture) => {
   commentsCount.textContent = picture.comments.length;
   socialCaption.textContent = picture.description;
   clearComments();
-  picture.comments.slice(0, MAX_COUNT).forEach(renderComment);
-  commentLoader.addEventListener('click', () => {
-    const renderedComments = document.querySelectorAll('.social__comment').length;
-    const slicedComments = picture.comments.slice(renderedComments, renderedComments + MAX_COUNT);
-    slicedComments.forEach(renderComment);
-    if (renderComment <= MAX_COUNT) {
-      commentLoader.classList.add('hidden');
-    } else {
-      commentLoader.classList.remove('hidden');
-      if (renderedComments === picture.comments.length) {
-        commentLoader.classList.add('hidden');
-      }
-    }
-    commentCount.textContent = `${renderedComments + slicedComments.length} из ${picture.comments.length} комментариев`;
-  });
+  setCommentCounter(MAX_COUNT, picture.comments.length);
+  commentList.append(...picture.comments.slice(0, MAX_COUNT).map(renderComment));
+  commentLoader.addEventListener('click', () => loadMoreHandler(picture.comments));
+};
+
+const closeBigPictureHandler = () => {
+  previewModal.classList.add('hidden');
+  body.classList.remove('modal-open');
+  commentLoader.replaceWith(commentLoaderTemplate.cloneNode(true));
 };
 
 const renderBigPicture = (post) => {
@@ -64,17 +70,11 @@ const renderBigPicture = (post) => {
 document.addEventListener('keydown', (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
-    previewModal.classList.add('hidden');
-    body.classList.remove('modal-open');
-    commentCount.replaceWith(commentCount.cloneNode(true));
-    // newComments();
+    closeBigPictureHandler();
   }
 });
 
-closeModal.addEventListener('click', () => {
-  previewModal.classList.add('hidden');
-  body.classList.remove('modal-open');
-});
+closeModal.addEventListener('click', closeBigPictureHandler);
 
 export { renderBigPicture };
 
