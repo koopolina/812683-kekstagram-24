@@ -1,12 +1,39 @@
 import { isEscapeKey } from './util.js';
 
+const HASHTAG_RE = /^[a-zA-Zа-яА-Я0-9]+$/;
+const MAX_VALUE = 100;
+const MIN_VALUE = 25;
+const STEP = 25;
+let defaultValue = MAX_VALUE;
+
 const body = document.querySelector('body');
 const uploadFile = document.querySelector('#upload-file');
 const editPhoto = document.querySelector('.img-upload__overlay');
 const closeButton = editPhoto.querySelector('#upload-cancel');
 const textHashtag = editPhoto.querySelector('.text__hashtags');
 const textDescription = editPhoto.querySelector('.text__description');
-const HASHTAG_RE = /^[a-zA-Zа-яА-Я0-9]+$/;
+const imgScale = editPhoto.querySelector('.img-upload__scale');
+const smallerScale = editPhoto.querySelector('.scale__control--smaller');
+const biggerScale = editPhoto.querySelector('.scale__control--bigger');
+const scaleValue = editPhoto.querySelector('.scale__control--value');
+
+smallerScale.addEventListener('click', () => {
+  defaultValue -= STEP;
+  if (defaultValue <= MIN_VALUE) {
+    defaultValue = MIN_VALUE;
+  }
+  scaleValue.setAttribute('value', `${defaultValue  }%`);
+  imgScale.style.transform = `scale(${  scaleValue/100  })`;
+});
+
+biggerScale.addEventListener('click', () => {
+  defaultValue += STEP;
+  if (defaultValue >= MAX_VALUE) {
+    defaultValue = MAX_VALUE;
+  }
+  scaleValue.setAttribute('value', `${defaultValue  }%`);
+  imgScale.style.transform = `scale(${  scaleValue/100  })`;
+});
 
 const checkRepeat = (hashtags) => {
   for (let i = 0; i < hashtags.length; i++) {
@@ -82,3 +109,4 @@ textDescription.addEventListener('invalid', () => {
     textDescription.setCustomValidity('Длина комментария не должна быть больше 140 символов');
   }
 });
+
