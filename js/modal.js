@@ -4,7 +4,7 @@ const HASHTAG_RE = /^[a-zA-Zа-яА-Я0-9]+$/;
 const MAX_VALUE = 100;
 const MIN_VALUE = 25;
 const STEP = 25;
-let defaultValue = MAX_VALUE;
+let currentValue = MAX_VALUE;
 
 const body = document.querySelector('body');
 const uploadFile = document.querySelector('#upload-file');
@@ -12,28 +12,23 @@ const editPhoto = document.querySelector('.img-upload__overlay');
 const closeButton = editPhoto.querySelector('#upload-cancel');
 const textHashtag = editPhoto.querySelector('.text__hashtags');
 const textDescription = editPhoto.querySelector('.text__description');
-const imgScale = editPhoto.querySelector('.img-upload__scale');
+const imgPreview = editPhoto.querySelector('.img-upload__preview img');
 const smallerScale = editPhoto.querySelector('.scale__control--smaller');
 const biggerScale = editPhoto.querySelector('.scale__control--bigger');
 const scaleValue = editPhoto.querySelector('.scale__control--value');
+const effectLevel = document.querySelector('.effect-level');
 
-smallerScale.addEventListener('click', () => {
-  defaultValue -= STEP;
-  if (defaultValue <= MIN_VALUE) {
-    defaultValue = MIN_VALUE;
+const changeScale = (step) => {
+  const nextValue = currentValue + step;
+  if (nextValue <= MAX_VALUE && nextValue >= MIN_VALUE) {
+    currentValue = nextValue;
   }
-  scaleValue.setAttribute('value', `${defaultValue  }%`);
-  imgScale.style.transform = `scale(${  scaleValue/100  })`;
-});
+  scaleValue.setAttribute('value', `${currentValue}%`);
+  imgPreview.style.transform = `scale(${currentValue / 100})`;
+};
 
-biggerScale.addEventListener('click', () => {
-  defaultValue += STEP;
-  if (defaultValue >= MAX_VALUE) {
-    defaultValue = MAX_VALUE;
-  }
-  scaleValue.setAttribute('value', `${defaultValue  }%`);
-  imgScale.style.transform = `scale(${  scaleValue/100  })`;
-});
+smallerScale.addEventListener('click', () => changeScale(-STEP));
+biggerScale.addEventListener('click', () => changeScale(STEP));
 
 const checkRepeat = (hashtags) => {
   for (let i = 0; i < hashtags.length; i++) {
@@ -52,6 +47,7 @@ const doNotClose = (evt) => {
 uploadFile.addEventListener('change', () => {
   editPhoto.classList.remove('hidden');
   body.classList.add('modal-open');
+  effectLevel.classList.add('hidden');
 
   document.addEventListener('keydown', (evt) => {
     if (isEscapeKey(evt)) {

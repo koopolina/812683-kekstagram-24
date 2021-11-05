@@ -26,12 +26,8 @@ const SLIDER_PARAMETERS = {
     step: 1,
     connect: 'lower',
     format: {
-      to: function (value) {
-        return value + '%';
-      },
-      from: function (value) {
-        return Number(value.replace('%', ''));
-      },
+      to: (value) => `${value}%`,
+      from: (value) => Number(value.replace('%', '')),
     },
   },
   'phobos': {
@@ -43,12 +39,8 @@ const SLIDER_PARAMETERS = {
     step: 0.1,
     connect: 'lower',
     format: {
-      to: function (value) {
-        return value + 'px';
-      },
-      from: function (value) {
-        return Number(value.replace('px', ''));
-      },
+      to: (value) => `${value}px`,
+      from: (value) => Number(value.replace('px', '')),
     },
   },
   'heat': {
@@ -74,21 +66,27 @@ const imgPreview = document.querySelector('.img-upload__preview img');
 const effectsList = document.querySelector('.effects__list');
 const effectSlider = document.querySelector('.effect-level__slider');
 const effectValue = document.querySelector('.effect-level__value');
+const effectLevel = document.querySelector('.effect-level');
 
 effectsList.addEventListener('click', (evt) => {
   if (evt.target.classList.contains('effects__radio')) {
     const currentEffectValue = evt.target.value;
+    effectLevel.classList.remove('hidden');
 
-    if (currentEffectValue !== 'none') {
+    if (currentEffectValue === 'none') {
+      imgPreview.className = '';
+      effectSlider.noUiSlider.destroy();
+      effectLevel.classList.add('hidden');
+    } else {
+      if (!effectSlider.noUiSlider) {
+        noUiSlider.create(effectSlider, SLIDER_PARAMETERS[currentEffectValue]);
+      }
       imgPreview.className = `effects__preview--${currentEffectValue}`;
-      noUiSlider.create(effectSlider, SLIDER_PARAMETERS[currentEffectValue]);
-      noUiSlider.on('update', (value, handle, unencoded) => {
+      effectSlider.noUiSlider.off('update');
+      effectSlider.noUiSlider.on('update', (value, handle, unencoded) => {
         imgPreview.style.filter = `${FILTERS[currentEffectValue]}(${value[handle]})`;
         effectValue.value = unencoded[handle];
       });
-    } else if (currentEffectValue === 'none') {
-      imgPreview.className = '';
-      effectSlider.noUiSlider.destroy();
     }
   }
 });
