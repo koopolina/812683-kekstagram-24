@@ -1,12 +1,34 @@
 import { isEscapeKey } from './util.js';
 
+const HASHTAG_RE = /^[a-zA-Zа-яА-Я0-9]+$/;
+const MAX_VALUE = 100;
+const MIN_VALUE = 25;
+const STEP = 25;
+let currentValue = MAX_VALUE;
+
 const body = document.querySelector('body');
 const uploadFile = document.querySelector('#upload-file');
 const editPhoto = document.querySelector('.img-upload__overlay');
 const closeButton = editPhoto.querySelector('#upload-cancel');
 const textHashtag = editPhoto.querySelector('.text__hashtags');
 const textDescription = editPhoto.querySelector('.text__description');
-const HASHTAG_RE = /^[a-zA-Zа-яА-Я0-9]+$/;
+const imgPreview = editPhoto.querySelector('.img-upload__preview img');
+const smallerScale = editPhoto.querySelector('.scale__control--smaller');
+const biggerScale = editPhoto.querySelector('.scale__control--bigger');
+const scaleValue = editPhoto.querySelector('.scale__control--value');
+const effectLevel = document.querySelector('.effect-level');
+
+const changeScale = (step) => {
+  const nextValue = currentValue + step;
+  if (nextValue <= MAX_VALUE && nextValue >= MIN_VALUE) {
+    currentValue = nextValue;
+  }
+  scaleValue.setAttribute('value', `${currentValue}%`);
+  imgPreview.style.transform = `scale(${currentValue / 100})`;
+};
+
+smallerScale.addEventListener('click', () => changeScale(-STEP));
+biggerScale.addEventListener('click', () => changeScale(STEP));
 
 const checkRepeat = (hashtags) => {
   for (let i = 0; i < hashtags.length; i++) {
@@ -25,6 +47,7 @@ const doNotClose = (evt) => {
 uploadFile.addEventListener('change', () => {
   editPhoto.classList.remove('hidden');
   body.classList.add('modal-open');
+  effectLevel.classList.add('hidden');
 
   document.addEventListener('keydown', (evt) => {
     if (isEscapeKey(evt)) {
@@ -82,3 +105,4 @@ textDescription.addEventListener('invalid', () => {
     textDescription.setCustomValidity('Длина комментария не должна быть больше 140 символов');
   }
 });
+
