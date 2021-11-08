@@ -90,3 +90,9 @@ effectsList.addEventListener('click', (evt) => {
     }
   }
 });
+
+const resetFilter = () => {
+  imgPreview.style.filter = 'none';
+};
+
+export { resetFilter };

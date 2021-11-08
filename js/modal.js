@@ -1,5 +1,7 @@
 import { isEscapeKey } from './util.js';
-import { showAlert } from './message.js';
+import { showErrorMessage, showSuccessMessage } from './message.js';
+import { sendData } from './api.js';
+import { resetFilter } from './slider.js';
 
 const HASHTAG_RE = /^[a-zA-Zа-яА-Я0-9]+$/;
 const MAX_VALUE = 100;
@@ -49,6 +51,10 @@ const doNotClose = (evt) => {
 const closeModal = () => {
   editPhoto.classList.add('hidden');
   body.classList.remove('modal-open');
+  document.removeEventListener('keydown', uploadFile);
+  uploadFile.innerHTML = '';
+  imgUploadForm.reset();
+  resetFilter();
 };
 
 uploadFile.addEventListener('change', () => {
@@ -60,42 +66,23 @@ uploadFile.addEventListener('change', () => {
     if (isEscapeKey(evt)) {
       evt.preventDefault();
       closeModal();
-      uploadFile.value = '';
     }
   });
 });
 
-const setUserFormSubmit = (onSuccess) => {
-  imgUploadForm.addEventListener('submit', (evt) => {
-    evt.preventDefault();
+imgUploadForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
 
-    const formData = new FormData(evt.target);
-
-    fetch(
-      'https://24.javascript.pages.academy/404',
-      {
-        method: 'POST',
-        body: formData,
-      },
-    )
-      .then((response) => {
-        if (response.ok) {
-          onSuccess();
-        } else {
-          showAlert(),
-          closeModal();
-        }
-      })
-      .catch(() => {
-        showAlert(),
-        closeModal();
-      });
-  });
-};
+  sendData(
+    () => showSuccessMessage(),
+    () => showErrorMessage(),
+    new FormData(evt.target),
+  );
+  closeModal();
+});
 
 closeButton.addEventListener('click', () => {
   closeModal();
-  uploadFile.value = '';
 });
 
 textHashtag.addEventListener('keydown', doNotClose);
@@ -139,5 +126,3 @@ textDescription.addEventListener('invalid', () => {
     textDescription.setCustomValidity('Длина комментария не должна быть больше 140 символов');
   }
 });
-
-export { setUserFormSubmit, closeModal };

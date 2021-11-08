@@ -2,31 +2,65 @@ import { isEscapeKey } from './util.js';
 
 const ALERT_SHOW_TIME = 5000;
 
-const mainTag = document.querySelector('main');
 const errorTemplate = document.querySelector('#error').content.querySelector('.error');
 const errorMessage = errorTemplate.cloneNode(true);
-const errorButton = errorTemplate.querySelector('.error__button');
+const errorButton = errorMessage.querySelector('.error__button');
+const successTemplate = document.querySelector('#success').content.querySelector('.success');
+const successMessage = successTemplate.cloneNode(true);
+const successButton = successMessage.querySelector('.success__button');
+
+const onEscKeydownErrorMessage = (evt) => {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    errorMessage.remove();
+  }
+};
+
+document.addEventListener('click', (evt) => {
+  if (evt.target !== errorTemplate) {
+    errorMessage.remove();
+  }
+});
 
 errorButton.addEventListener('click', () => {
   errorMessage.remove();
-
-  document.addEventListener('keydown', (evt) => {
-    if (isEscapeKey(evt)) {
-      evt.preventDefault();
-      errorMessage.remove();
-    }
-  });
+  document.removeEventListener('keydown', onEscKeydownErrorMessage);
 });
 
-const showAlert = (message) => {
-  mainTag.appendChild(errorMessage);
-  const alertElement = document.createElement('div');
-  alertElement.textContent = message;
-  document.body.append(alertElement);
+const showErrorMessage = () => {
+  document.body.appendChild(errorMessage);
+  document.addEventListener('keydown', onEscKeydownErrorMessage);
 
   setTimeout(() => {
-    alertElement.remove();
+    errorMessage.remove();
   }, ALERT_SHOW_TIME);
 };
 
-export { showAlert };
+const onEscKeydownSuccessMessage = (evt) => {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    successMessage.remove();
+  }
+};
+
+document.addEventListener('click', (evt) => {
+  if (evt.target !== successTemplate) {
+    successMessage.remove();
+  }
+});
+
+successButton.addEventListener('click', () => {
+  successMessage.remove();
+  document.removeEventListener('keydown', onEscKeydownSuccessMessage);
+});
+
+const showSuccessMessage = () => {
+  document.body.appendChild(successMessage);
+  document.addEventListener('keydown', onEscKeydownSuccessMessage);
+
+  setTimeout(() => {
+    successMessage.remove();
+  }, ALERT_SHOW_TIME);
+};
+
+export { showErrorMessage, showSuccessMessage };
