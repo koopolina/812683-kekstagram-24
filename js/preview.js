@@ -2,7 +2,7 @@ import { isEscapeKey } from './util.js';
 
 const MAX_COUNT = 5;
 
-const body = document.querySelector('body');
+const bodyTag = document.querySelector('body');
 const previewModal = document.querySelector('.big-picture');
 const closeModal = document.querySelector('#picture-cancel');
 const bigPicture = previewModal.querySelector('.big-picture__img img');
@@ -57,14 +57,14 @@ const openPicture = (picture) => {
 
 const closeBigPictureHandler = () => {
   previewModal.classList.add('hidden');
-  body.classList.remove('modal-open');
+  bodyTag.classList.remove('modal-open');
   commentLoader.replaceWith(commentLoaderTemplate.cloneNode(true));
 };
 
 const renderBigPicture = (post) => {
   openPicture(post);
   previewModal.classList.remove('hidden');
-  body.classList.add('modal-open');
+  bodyTag.classList.add('modal-open');
 };
 
 document.addEventListener('keydown', (evt) => {

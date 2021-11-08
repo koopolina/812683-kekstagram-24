@@ -1,4 +1,5 @@
 import { isEscapeKey } from './util.js';
+import { showAlert } from './message.js';
 
 const HASHTAG_RE = /^[a-zA-Zа-яА-Я0-9]+$/;
 const MAX_VALUE = 100;
@@ -17,6 +18,7 @@ const smallerScale = editPhoto.querySelector('.scale__control--smaller');
 const biggerScale = editPhoto.querySelector('.scale__control--bigger');
 const scaleValue = editPhoto.querySelector('.scale__control--value');
 const effectLevel = document.querySelector('.effect-level');
+const imgUploadForm = document.querySelector('.img-upload__form');
 
 const changeScale = (step) => {
   const nextValue = currentValue + step;
@@ -44,6 +46,11 @@ const doNotClose = (evt) => {
   }
 };
 
+const closeModal = () => {
+  editPhoto.classList.add('hidden');
+  body.classList.remove('modal-open');
+};
+
 uploadFile.addEventListener('change', () => {
   editPhoto.classList.remove('hidden');
   body.classList.add('modal-open');
@@ -52,15 +59,42 @@ uploadFile.addEventListener('change', () => {
   document.addEventListener('keydown', (evt) => {
     if (isEscapeKey(evt)) {
       evt.preventDefault();
-      editPhoto.classList.add('hidden');
-      body.classList.remove('modal-open');
+      closeModal();
+      uploadFile.value = '';
     }
   });
 });
 
+const setUserFormSubmit = (onSuccess) => {
+  imgUploadForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    const formData = new FormData(evt.target);
+
+    fetch(
+      'https://24.javascript.pages.academy/404',
+      {
+        method: 'POST',
+        body: formData,
+      },
+    )
+      .then((response) => {
+        if (response.ok) {
+          onSuccess();
+        } else {
+          showAlert(),
+          closeModal();
+        }
+      })
+      .catch(() => {
+        showAlert(),
+        closeModal();
+      });
+  });
+};
+
 closeButton.addEventListener('click', () => {
-  editPhoto.classList.add('hidden');
-  body.classList.remove('modal-open');
+  closeModal();
   uploadFile.value = '';
 });
 
@@ -106,3 +140,4 @@ textDescription.addEventListener('invalid', () => {
   }
 });
 
+export { setUserFormSubmit, closeModal };

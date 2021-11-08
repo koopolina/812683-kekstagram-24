@@ -1,5 +1,5 @@
 const getRandomInt = (min, max) => {
-  if(min >= max) {
+  if (min >= max) {
     throw 'До не может быть меньше или равно значению от';
   }
   min = Math.ceil(min);
@@ -9,4 +9,4 @@ const getRandomInt = (min, max) => {
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-export {getRandomInt, isEscapeKey};
+export { getRandomInt, isEscapeKey };
