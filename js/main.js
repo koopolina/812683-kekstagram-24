@@ -7,4 +7,3 @@ import { getData } from './api.js';
 getData((posts) => {
   renderPosts(posts);
 });
-

@@ -9,22 +9,24 @@ const successTemplate = document.querySelector('#success').content.querySelector
 const successMessage = successTemplate.cloneNode(true);
 const successButton = successMessage.querySelector('.success__button');
 
-const onEscKeydownErrorMessage = (evt) => {
+const messageErrorCloseHandler = () => {
+  errorMessage.remove();
+  document.removeEventListener('keydown', onEscKeydownErrorMessage);
+};
+
+function onEscKeydownErrorMessage(evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
-    errorMessage.remove();
+    messageErrorCloseHandler();
   }
-};
+}
+
+errorButton.addEventListener('click', messageErrorCloseHandler);
 
 document.addEventListener('click', (evt) => {
   if (evt.target !== errorTemplate) {
-    errorMessage.remove();
+    messageErrorCloseHandler();
   }
-});
-
-errorButton.addEventListener('click', () => {
-  errorMessage.remove();
-  document.removeEventListener('keydown', onEscKeydownErrorMessage);
 });
 
 const showErrorMessage = () => {
@@ -32,34 +34,36 @@ const showErrorMessage = () => {
   document.addEventListener('keydown', onEscKeydownErrorMessage);
 
   setTimeout(() => {
-    errorMessage.remove();
+    messageErrorCloseHandler();
   }, ALERT_SHOW_TIME);
 };
 
-const onEscKeydownSuccessMessage = (evt) => {
+const messageSuccessCloseHandler = () => {
+  successMessage.remove();
+  document.removeEventListener('keydown', onEscKeydownSuccessMessage);
+};
+
+function onEscKeydownSuccessMessage(evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
-    successMessage.remove();
+    messageSuccessCloseHandler();
   }
-};
+}
 
 document.addEventListener('click', (evt) => {
   if (evt.target !== successTemplate) {
-    successMessage.remove();
+    messageSuccessCloseHandler();
   }
 });
 
-successButton.addEventListener('click', () => {
-  successMessage.remove();
-  document.removeEventListener('keydown', onEscKeydownSuccessMessage);
-});
+successButton.addEventListener('click', messageSuccessCloseHandler);
 
 const showSuccessMessage = () => {
   document.body.appendChild(successMessage);
   document.addEventListener('keydown', onEscKeydownSuccessMessage);
 
   setTimeout(() => {
-    successMessage.remove();
+    messageSuccessCloseHandler();
   }, ALERT_SHOW_TIME);
 };
 

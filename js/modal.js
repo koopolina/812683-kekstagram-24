@@ -74,8 +74,8 @@ imgUploadForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
 
   sendData(
-    () => showSuccessMessage(),
-    () => showErrorMessage(),
+    showSuccessMessage,
+    showErrorMessage,
     new FormData(evt.target),
   );
   closeModal();
