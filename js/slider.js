@@ -76,7 +76,7 @@ effectsList.addEventListener('click', (evt) => {
     if (currentEffectValue === 'none') {
       imgPreview.className = '';
       effectSlider.noUiSlider.destroy();
-      effectLevel.classList.add('hidden');
+      effectLevel.remove();
     } else {
       if (!effectSlider.noUiSlider) {
         noUiSlider.create(effectSlider, SLIDER_PARAMETERS[currentEffectValue]);
@@ -90,3 +90,9 @@ effectsList.addEventListener('click', (evt) => {
     }
   }
 });
+
+const resetFilter = () => {
+  imgPreview.style.filter = 'none';
+};
+
+export { resetFilter };

@@ -1,4 +1,7 @@
 import { isEscapeKey } from './util.js';
+import { showErrorMessage, showSuccessMessage } from './message.js';
+import { sendData } from './api.js';
+import { resetFilter } from './slider.js';
 
 const HASHTAG_RE = /^[a-zA-Zа-яА-Я0-9]+$/;
 const MAX_VALUE = 100;
@@ -17,6 +20,7 @@ const smallerScale = editPhoto.querySelector('.scale__control--smaller');
 const biggerScale = editPhoto.querySelector('.scale__control--bigger');
 const scaleValue = editPhoto.querySelector('.scale__control--value');
 const effectLevel = document.querySelector('.effect-level');
+const imgUploadForm = document.querySelector('.img-upload__form');
 
 const changeScale = (step) => {
   const nextValue = currentValue + step;
@@ -44,6 +48,15 @@ const doNotClose = (evt) => {
   }
 };
 
+const closeModal = () => {
+  editPhoto.classList.add('hidden');
+  body.classList.remove('modal-open');
+  document.removeEventListener('keydown', uploadFile);
+  uploadFile.innerHTML = '';
+  imgUploadForm.reset();
+  resetFilter();
+};
+
 uploadFile.addEventListener('change', () => {
   editPhoto.classList.remove('hidden');
   body.classList.add('modal-open');
@@ -52,16 +65,24 @@ uploadFile.addEventListener('change', () => {
   document.addEventListener('keydown', (evt) => {
     if (isEscapeKey(evt)) {
       evt.preventDefault();
-      editPhoto.classList.add('hidden');
-      body.classList.remove('modal-open');
+      closeModal();
     }
   });
 });
 
+imgUploadForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+
+  sendData(
+    showSuccessMessage,
+    showErrorMessage,
+    new FormData(evt.target),
+  );
+  closeModal();
+});
+
 closeButton.addEventListener('click', () => {
-  editPhoto.classList.add('hidden');
-  body.classList.remove('modal-open');
-  uploadFile.value = '';
+  closeModal();
 });
 
 textHashtag.addEventListener('keydown', doNotClose);
@@ -105,4 +126,3 @@ textDescription.addEventListener('invalid', () => {
     textDescription.setCustomValidity('Длина комментария не должна быть больше 140 символов');
   }
 });
-
