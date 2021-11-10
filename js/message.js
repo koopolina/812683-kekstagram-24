@@ -33,9 +33,7 @@ const showErrorMessage = () => {
   document.body.appendChild(errorMessage);
   document.addEventListener('keydown', onEscKeydownErrorMessage);
 
-  setTimeout(() => {
-    messageErrorCloseHandler();
-  }, ALERT_SHOW_TIME);
+  setTimeout(messageErrorCloseHandler, ALERT_SHOW_TIME);
 };
 
 const messageSuccessCloseHandler = () => {
