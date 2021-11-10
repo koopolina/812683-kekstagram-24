@@ -4,11 +4,12 @@ import './preview.js';
 import './slider.js';
 import './modal.js';
 import { getData } from './api.js';
-import { sortFilterDiscussed, sortFilterRandom, sortFilterDefault } from './filter.js';
+import { initFilterDiscussed, initFilterRandom, initFilterDefault } from './filter.js';
+import { showFailMessage } from './message.js';
 
 getData((posts) => {
   renderPosts(posts);
-  sortFilterDiscussed(posts);
-  sortFilterRandom(posts);
-  sortFilterDefault(posts);
-});
+  initFilterDiscussed(posts);
+  initFilterRandom(posts);
+  initFilterDefault(posts);
+}, showFailMessage);

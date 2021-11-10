@@ -1,4 +1,5 @@
 import { renderBigPicture } from './preview.js';
+import { getRandomInt } from './util.js';
 
 const RANDOM_PICTURES_COUNT = 10;
 
@@ -6,13 +7,11 @@ const similarListElement = document.querySelector('.pictures');
 const similarPostTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const imgFilters = document.querySelector('.img-filters');
 
-const getCommentsAmount = (post) => post.comments.length;
-
-const compareNumbers = (pictureA, pictureB) => getCommentsAmount(pictureB) - getCommentsAmount(pictureA);
+const compareNumbers = (pictureA, pictureB) => pictureB.comments.length - pictureA.comments.length;
 
 const clearRenderPosts = (pictures) => {
   pictures.forEach((item) => {
-    item.outerHTML = '';
+    item.remove();
   });
 };
 
@@ -40,7 +39,8 @@ const renderPostsDiscussed = (posts) => {
 };
 
 const renderPostsRandom = (posts) => {
-  renderPosts(posts.slice().slice(0, RANDOM_PICTURES_COUNT));
+  const index = getRandomInt(0, RANDOM_PICTURES_COUNT);
+  renderPosts(posts.slice(index, index+RANDOM_PICTURES_COUNT));
 };
 
 export { renderPosts, renderPostsDiscussed, renderPostsRandom };

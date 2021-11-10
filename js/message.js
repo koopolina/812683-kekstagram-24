@@ -8,6 +8,9 @@ const errorButton = errorMessage.querySelector('.error__button');
 const successTemplate = document.querySelector('#success').content.querySelector('.success');
 const successMessage = successTemplate.cloneNode(true);
 const successButton = successMessage.querySelector('.success__button');
+const failTemplate = document.querySelector('#fail').content.querySelector('.fail');
+const failMessage = failTemplate.cloneNode(true);
+const failButton = failMessage.querySelector('.fail__button');
 
 const messageErrorCloseHandler = () => {
   errorMessage.remove();
@@ -65,4 +68,33 @@ const showSuccessMessage = () => {
   }, ALERT_SHOW_TIME);
 };
 
-export { showErrorMessage, showSuccessMessage };
+const messageFailCloseHandler = () => {
+  failMessage.remove();
+  document.removeEventListener('keydown', onEscKeydownFailMessage);
+};
+
+function onEscKeydownFailMessage(evt) {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    messageFailCloseHandler();
+  }
+}
+
+document.addEventListener('click', (evt) => {
+  if (evt.target !== failTemplate) {
+    messageFailCloseHandler();
+  }
+});
+
+failButton.addEventListener('click', messageFailCloseHandler);
+
+const showFailMessage = () => {
+  document.body.appendChild(failMessage);
+  document.addEventListener('keydown', onEscKeydownFailMessage);
+
+  setTimeout(() => {
+    messageFailCloseHandler();
+  }, ALERT_SHOW_TIME);
+};
+
+export { showErrorMessage, showSuccessMessage, showFailMessage };
