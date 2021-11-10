@@ -1,7 +1,8 @@
 import { renderPostsDiscussed, renderPostsRandom, renderPosts } from './similar-list.js';
-import { debounce } from './util.js';
+import { debounce, getRandomInt } from './util.js';
 
 const RERENDER_DELAY = 500;
+const RANDOM_PICTURES_COUNT = 10;
 
 const filterDiscussed = document.querySelector('#filter-discussed');
 const filterRandom = document.querySelector('#filter-random');
@@ -26,7 +27,7 @@ const sortFilterRandom = (posts) => {
     evt.target.classList.add('img-filters__button--active');
     filterDefault.classList.remove('img-filters__button--active');
     filterDiscussed.classList.remove('img-filters__button--active');
-    debouncedRenderPostsRandom(posts);
+    debouncedRenderPostsRandom(posts.slice(getRandomInt(0, RANDOM_PICTURES_COUNT)));
   });
 };
 

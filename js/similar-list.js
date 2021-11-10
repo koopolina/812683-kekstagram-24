@@ -1,5 +1,4 @@
 import { renderBigPicture } from './preview.js';
-import { getRandomInt } from './util.js';
 
 const RANDOM_PICTURES_COUNT = 10;
 
@@ -41,7 +40,7 @@ const renderPostsDiscussed = (posts) => {
 };
 
 const renderPostsRandom = (posts) => {
-  renderPosts(posts.slice().slice(getRandomInt(0, RANDOM_PICTURES_COUNT)));
+  renderPosts(posts.slice().slice(0, RANDOM_PICTURES_COUNT));
 };
 
 export { renderPosts, renderPostsDiscussed, renderPostsRandom };
