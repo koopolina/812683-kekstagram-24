@@ -29,13 +29,12 @@ document.addEventListener('click', (evt) => {
   }
 });
 
-const showErrorMessage = () => {
+const showErrorMessage = (message) => {
+  errorMessage.querySelector('.error__title').textContent = message;
   document.body.appendChild(errorMessage);
   document.addEventListener('keydown', onEscKeydownErrorMessage);
 
-  setTimeout(() => {
-    messageErrorCloseHandler();
-  }, ALERT_SHOW_TIME);
+  setTimeout(messageErrorCloseHandler, ALERT_SHOW_TIME);
 };
 
 const messageSuccessCloseHandler = () => {
@@ -62,9 +61,7 @@ const showSuccessMessage = () => {
   document.body.appendChild(successMessage);
   document.addEventListener('keydown', onEscKeydownSuccessMessage);
 
-  setTimeout(() => {
-    messageSuccessCloseHandler();
-  }, ALERT_SHOW_TIME);
+  setTimeout(messageSuccessCloseHandler, ALERT_SHOW_TIME);
 };
 
 export { showErrorMessage, showSuccessMessage };

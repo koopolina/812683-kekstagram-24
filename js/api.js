@@ -1,12 +1,13 @@
 const getData = (onSuccess, onFail) => {
   fetch('https://24.javascript.pages.academy/kekstagram/data')
-    .then((response) => response.json())
-    .then((posts) => {
-      onSuccess(posts);
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error('Не удалось загрузить фотографии');
     })
-    .catch(() => {
-      onFail();
-    });
+    .then(onSuccess)
+    .catch(onFail);
 };
 
 const sendData = (onSuccess, onFail, body) => {
