@@ -71,16 +71,15 @@ const effectLevel = document.querySelector('.effect-level');
 effectsList.addEventListener('click', (evt) => {
   if (evt.target.classList.contains('effects__radio')) {
     const currentEffectValue = evt.target.value;
-    effectLevel.classList.remove('hidden');
-
+    if (effectSlider.noUiSlider) {
+      effectSlider.noUiSlider.destroy();
+    }
     if (currentEffectValue === 'none') {
       imgPreview.className = '';
-      effectSlider.noUiSlider.destroy();
-      effectLevel.remove();
+      effectLevel.classList.add('hidden');
     } else {
-      if (!effectSlider.noUiSlider) {
-        noUiSlider.create(effectSlider, SLIDER_PARAMETERS[currentEffectValue]);
-      }
+      effectLevel.classList.remove('hidden');
+      noUiSlider.create(effectSlider, SLIDER_PARAMETERS[currentEffectValue]);
       imgPreview.className = `effects__preview--${currentEffectValue}`;
       effectSlider.noUiSlider.off('update');
       effectSlider.noUiSlider.on('update', (value, handle, unencoded) => {
