@@ -5,11 +5,11 @@ import './slider.js';
 import './modal.js';
 import { getData } from './api.js';
 import { initFilterDiscussed, initFilterRandom, initFilterDefault } from './filter.js';
-import { showFailMessage } from './message.js';
+import { showErrorMessage } from './message.js';
 
 getData((posts) => {
   renderPosts(posts);
   initFilterDiscussed(posts);
   initFilterRandom(posts);
   initFilterDefault(posts);
-}, showFailMessage);
+}, showErrorMessage);
