@@ -27,12 +27,17 @@ const changeScale = (step) => {
   if (nextValue <= MAX_VALUE && nextValue >= MIN_VALUE) {
     currentValue = nextValue;
   }
-  scaleValue.setAttribute('value', `${currentValue}%`);
+  scaleValue.value = `${currentValue}%`;
   imgPreview.style.transform = `scale(${currentValue / 100})`;
 };
 
 smallerScale.addEventListener('click', () => changeScale(-STEP));
 biggerScale.addEventListener('click', () => changeScale(STEP));
+
+const resetScale = () => {
+  currentValue = MAX_VALUE;
+  imgPreview.style.transform = '';
+};
 
 const checkRepeat = (hashtags) => {
   for (let i = 0; i < hashtags.length; i++) {
@@ -42,7 +47,7 @@ const checkRepeat = (hashtags) => {
   }
 };
 
-const doNotClose = (evt) => {
+const inputStopPropagationOnEscHandler = (evt) => {
   if (isEscapeKey(evt)) {
     evt.stopPropagation();
   }
@@ -55,6 +60,7 @@ const closeModal = () => {
   uploadFile.innerHTML = '';
   imgUploadForm.reset();
   resetFilter();
+  resetScale();
 };
 
 uploadFile.addEventListener('change', () => {
@@ -85,9 +91,9 @@ closeButton.addEventListener('click', () => {
   closeModal();
 });
 
-textHashtag.addEventListener('keydown', doNotClose);
+textHashtag.addEventListener('keydown', inputStopPropagationOnEscHandler);
 
-textDescription.addEventListener('keydown', doNotClose);
+textDescription.addEventListener('keydown', inputStopPropagationOnEscHandler);
 
 const checkHashtags = (textHashtagValue) => {
   if (textHashtagValue) {
@@ -103,7 +109,7 @@ const checkHashtags = (textHashtagValue) => {
           return 'Хэш-тег должен начинаться с символа # (решётка)';
         } else if (hashtags[i] === '#') {
           return 'Хэш-тег не может состоять только из одной решётки';
-        } else if (!HASHTAG_RE.exec(hashtags[i])) {
+        } else if (HASHTAG_RE.exec(hashtags[i])) {
           return 'Строка после решётки должна состоять из букв и чисел';
         } else if (hashtags[i].length > 20) {
           return 'Максимальная длина одного хэш-тега 20 символов, включая решётку';

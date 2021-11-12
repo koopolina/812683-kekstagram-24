@@ -9,7 +9,7 @@ const filterDefault = document.querySelector('#filter-default');
 
 const debouncedRenderPostsDiscussed = debounce(renderPostsDiscussed, RERENDER_DELAY);
 const debouncedRenderPostsRandom = debounce(renderPostsRandom, RERENDER_DELAY);
-const debouncedRenderPostsDefault =debounce(renderPosts, RERENDER_DELAY);
+const debouncedRenderPostsDefault = debounce(renderPosts, RERENDER_DELAY);
 
 
 const initFilterDiscussed = (posts) => {

@@ -33,7 +33,7 @@ const SLIDER_PARAMETERS = {
   'phobos': {
     range: {
       min: 0,
-      max: 1,
+      max: 3,
     },
     start: 1,
     step: 0.1,
