@@ -116,6 +116,8 @@ const hashTagInputHandler = () => {
   textHashtag.reportValidity();
 };
 
+textHashtag.addEventListener('input', hashTagInputHandler);
+
 textDescription.addEventListener('invalid', () => {
   if (textDescription.validity.tooLong) {
     textDescription.setCustomValidity('Длина комментария не должна быть больше 140 символов');
