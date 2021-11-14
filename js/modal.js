@@ -3,7 +3,7 @@ import { showErrorMessage, showSuccessMessage } from './message.js';
 import { sendData } from './api.js';
 import { resetFilter } from './slider.js';
 
-const HASHTAG_RE = /^[a-zA-Zа-яА-Я0-9]+$/;
+const HASHTAG_RE = /^#[a-zA-Zа-яА-Я0-9]+$/;
 const MAX_VALUE = 100;
 const MIN_VALUE = 25;
 const STEP = 25;
@@ -42,7 +42,7 @@ const resetScale = () => {
 const checkRepeat = (hashtags) => {
   for (let i = 0; i < hashtags.length; i++) {
     if (hashtags.slice(i + 1).includes(hashtags[i])) {
-      return false;
+      return true;
     }
   }
 };
@@ -76,17 +76,6 @@ uploadFile.addEventListener('change', () => {
   });
 });
 
-imgUploadForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-
-  sendData(
-    showSuccessMessage,
-    showErrorMessage,
-    new FormData(evt.target),
-  );
-  closeModal();
-});
-
 closeButton.addEventListener('click', () => {
   closeModal();
 });
@@ -109,7 +98,7 @@ const checkHashtags = (textHashtagValue) => {
           return 'Хэш-тег должен начинаться с символа # (решётка)';
         } else if (hashtags[i] === '#') {
           return 'Хэш-тег не может состоять только из одной решётки';
-        } else if (HASHTAG_RE.exec(hashtags[i])) {
+        } else if (!HASHTAG_RE.exec(hashtags[i])) {
           return 'Строка после решётки должна состоять из букв и чисел';
         } else if (hashtags[i].length > 20) {
           return 'Максимальная длина одного хэш-тега 20 символов, включая решётку';
@@ -120,15 +109,28 @@ const checkHashtags = (textHashtagValue) => {
   return '';
 };
 
-textHashtag.addEventListener('input', () => {
+const hashTagInputHandler = () => {
   const textHashtagValue = textHashtag.value.trim();
   const message = checkHashtags(textHashtagValue);
   textHashtag.setCustomValidity(message);
   textHashtag.reportValidity();
-});
+};
 
 textDescription.addEventListener('invalid', () => {
   if (textDescription.validity.tooLong) {
     textDescription.setCustomValidity('Длина комментария не должна быть больше 140 символов');
+  }
+});
+
+imgUploadForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+  hashTagInputHandler();
+  if (evt.target.checkValidity()) {
+    sendData(
+      showSuccessMessage,
+      showErrorMessage,
+      new FormData(evt.target),
+    );
+    closeModal();
   }
 });

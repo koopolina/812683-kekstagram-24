@@ -35,7 +35,7 @@ const SLIDER_PARAMETERS = {
       min: 0,
       max: 3,
     },
-    start: 1,
+    start: 3,
     step: 0.1,
     connect: 'lower',
     format: {
