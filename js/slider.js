@@ -68,11 +68,16 @@ const effectSlider = document.querySelector('.effect-level__slider');
 const effectValue = document.querySelector('.effect-level__value');
 const effectLevel = document.querySelector('.effect-level');
 
+const resetFilter = () => {
+  imgPreview.style.filter = 'none';
+};
+
 effectsList.addEventListener('click', (evt) => {
   if (evt.target.classList.contains('effects__radio')) {
     const currentEffectValue = evt.target.value;
     if (effectSlider.noUiSlider) {
       effectSlider.noUiSlider.destroy();
+      resetFilter();
     }
     if (currentEffectValue === 'none') {
       imgPreview.className = '';
@@ -89,9 +94,5 @@ effectsList.addEventListener('click', (evt) => {
     }
   }
 });
-
-const resetFilter = () => {
-  imgPreview.style.filter = 'none';
-};
 
 export { resetFilter };

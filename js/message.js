@@ -11,10 +11,10 @@ const successButton = successMessage.querySelector('.success__button');
 
 const messageErrorCloseHandler = () => {
   errorMessage.remove();
-  document.removeEventListener('keydown', escKeydownErrorMessage);
+  document.removeEventListener('keydown', escKeydownErrorMessageHandler);
 };
 
-function escKeydownErrorMessage(evt) {
+function escKeydownErrorMessageHandler(evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     messageErrorCloseHandler();
@@ -32,17 +32,17 @@ document.addEventListener('click', (evt) => {
 const showErrorMessage = (message) => {
   errorMessage.querySelector('.error__title').textContent = message;
   document.body.appendChild(errorMessage);
-  document.addEventListener('keydown', escKeydownErrorMessage);
+  document.addEventListener('keydown', escKeydownErrorMessageHandler);
 
   setTimeout(messageErrorCloseHandler, ALERT_SHOW_TIME);
 };
 
 const messageSuccessCloseHandler = () => {
   successMessage.remove();
-  document.removeEventListener('keydown', escKeydownSuccessMessage);
+  document.removeEventListener('keydown', escKeydownSuccessMessageHandler);
 };
 
-function escKeydownSuccessMessage(evt) {
+function escKeydownSuccessMessageHandler(evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     messageSuccessCloseHandler();
@@ -59,7 +59,7 @@ successButton.addEventListener('click', messageSuccessCloseHandler);
 
 const showSuccessMessage = () => {
   document.body.appendChild(successMessage);
-  document.addEventListener('keydown', escKeydownSuccessMessage);
+  document.addEventListener('keydown', escKeydownSuccessMessageHandler);
 
   setTimeout(messageSuccessCloseHandler, ALERT_SHOW_TIME);
 };
